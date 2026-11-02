@@ -81,13 +81,17 @@
       const box=document.createElement('div'); box.className='q';
       box.innerHTML=`<p>${qi+1}. ${q.q}</p><div class="opts"></div><div class="fb" aria-live="polite"></div>`;
       const opts=box.querySelector('.opts'), fb=box.querySelector('.fb');
-      q.o.forEach((t,oi)=>{
-        const b=document.createElement('button'); b.type='button'; b.className='opt'; b.textContent=`${shuffleLabels[oi]}. ${t}`;
+      /* ערבוב סדר התשובות בכל טעינה, כדי שהנכונה לא תמיד תהיה א' */
+      const order=q.o.map((_,i)=>i);
+      for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+      const correctPos=order.indexOf(q.a);
+      order.forEach((src,pos)=>{
+        const b=document.createElement('button'); b.type='button'; b.className='opt'; b.textContent=`${shuffleLabels[pos]}. ${q.o[src]}`;
         b.addEventListener('click',()=>{
           opts.querySelectorAll('button').forEach(x=>x.disabled=true);
           answered++;
-          if(oi===q.a){ b.classList.add('right'); score++; fb.textContent='נכון! '+q.w; }
-          else { b.classList.add('wrong'); opts.children[q.a].classList.add('right'); fb.textContent='לא בדיוק. '+q.w; }
+          if(pos===correctPos){ b.classList.add('right'); score++; fb.textContent='נכון! '+q.w; }
+          else { b.classList.add('wrong'); opts.children[correctPos].classList.add('right'); fb.textContent='לא בדיוק. '+q.w; }
           if(answered===c.quiz.length){
             const s=document.getElementById('score');
             s.textContent=`סיימתם: ${score} מתוך ${c.quiz.length}`+(score===c.quiz.length?' — מצוין!':' — אפשר לעבור שוב על הבלוקים ולנסות שוב.');
