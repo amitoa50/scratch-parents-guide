@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מילון קטן | מדריך להורים</title>
+<link rel="stylesheet" href="assets/blocks.css">
+<link rel="stylesheet" href="assets/guide.css">
+</head>
+<body data-root="">
+<header id="top"></header>
+<main><div class="wrap">
+<section class="hero"><div class="crumbs"><a href="index.html">← חזרה לדף הבית</a></div>
+<h1>מילון קטן</h1><p>מילים שהילד יגיד בבית, ומה הן אומרות.</p></section>
+<input class="search" id="q" type="search" placeholder="חיפוש מונח..." aria-label="חיפוש מונח">
+<dl class="gloss" id="gl"><dt>ספרייט / דמות (Sprite)</dt><dd>כל דמות או חפץ על הבמה שיש לו קוד משלו.</dd><dt>במה (Stage)</dt><dd>האזור שבו המשחק רץ. לבמה יש רקעים וקוד משלה.</dd><dt>בלוק (Block)</dt><dd>חתיכת פאזל שגוררים לאזור הקוד, וכל אחת עושה פעולה.</dd><dt>סקריפט (Script)</dt><dd>כמה בלוקים מחוברים יחד, שמתחילים בכובע.</dd><dt>תלבושת (Costume)</dt><dd>מראה אחד של דמות. כמה תלבושות יוצרות אנימציה.</dd><dt>רקע (Backdrop)</dt><dd>תמונת הרקע של הבמה.</dd><dt>אירוע (Event)</dt><dd>משהו שקורה ומפעיל קוד: לחיצה על דגל או על מקש.</dd><dt>לולאה (Loop)</dt><dd>חזרה על פעולה שוב ושוב.</dd><dt>תנאי (Condition)</dt><dd>בדיקה של "אם זה נכון אז..."</dd><dt>משתנה (Variable)</dt><dd>קופסה שזוכרת מספר או טקסט, כמו ניקוד.</dd><dt>שכפול (Clone)</dt><dd>עותק של דמות שנוצר בזמן המשחק.</dd><dt>קואורדינטות (x, y)</dt><dd>מיקום על הבמה. x הוא ימינה ושמאלה, y למעלה ולמטה.</dd><dt>באג (Bug)</dt><dd>טעות בקוד. גם מקצוענים עושים אותם כל הזמן.</dd></dl>
+</div></main>
+<footer><div class="wrap">מדריך להורים · חוג סקראץ'</div></footer>
+<script src="assets/data/blocks.js"></script>
+<script src="assets/guide.js"></script>
+<script>
+document.getElementById('q').addEventListener('input',function(e){
+  var v=e.target.value.trim().toLowerCase();
+  document.querySelectorAll('#gl dt').forEach(function(dt){
+    var dd=dt.nextElementSibling, hit=!v||(dt.textContent+dd.textContent).toLowerCase().indexOf(v)>-1;
+    dt.hidden=dd.hidden=!hit;
+  });
+});
+</script>
+</body>
+</html>

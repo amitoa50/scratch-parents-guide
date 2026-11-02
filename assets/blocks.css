@@ -1,0 +1,266 @@
+/* ============================================================
+   blocks.css — שחזור בלוקי סקראץ' 3 ב-CSS טהור
+   דו-לשוני (עברית/אנגלית), תומך RTL ו-LTR
+   ============================================================ */
+
+:root{
+  /* צבעי סקראץ' 3 הרשמיים */
+  --motion:    #4C97FF;  --motion-d:    #3373CC;
+  --looks:     #9966FF;  --looks-d:     #774DCB;
+  --sound:     #CF63CF;  --sound-d:     #BD42BD;
+  --events:    #FFBF00;  --events-d:    #E6AC00;
+  --control:   #FFAB19;  --control-d:   #EC9C13;
+  --sensing:   #5CB1D6;  --sensing-d:   #2E8EB8;
+  --operators: #59C059;  --operators-d: #389438;
+  --variables: #FF8C1A;  --variables-d: #DB6E00;
+  --myblocks:  #FF6680;  --myblocks-d:  #FF3355;
+
+  --field-txt: #575E75;
+  --notch-w: 26px;
+  --notch-h: 7px;
+  --notch-x: 16px;
+}
+
+/* ---- קביעת צבע לפי קטגוריה ---- */
+.cat-motion    { --c: var(--motion);    --cd: var(--motion-d); }
+.cat-looks     { --c: var(--looks);     --cd: var(--looks-d); }
+.cat-sound     { --c: var(--sound);     --cd: var(--sound-d); }
+.cat-events    { --c: var(--events);    --cd: var(--events-d); }
+.cat-control   { --c: var(--control);   --cd: var(--control-d); }
+.cat-sensing   { --c: var(--sensing);   --cd: var(--sensing-d); }
+.cat-operators { --c: var(--operators); --cd: var(--operators-d); }
+.cat-variables { --c: var(--variables); --cd: var(--variables-d); }
+.cat-myblocks  { --c: var(--myblocks);  --cd: var(--myblocks-d); }
+
+/* ============================================================
+   תווית דו-לשונית
+   ============================================================ */
+.lbl{
+  display:inline-flex; flex-direction:column;
+  align-items:flex-start; justify-content:center;
+  line-height:1.06; white-space:nowrap;
+}
+.lbl b{ font-weight:700; font-size:1em; }
+.lbl i{
+  font-style:normal; font-weight:600;
+  font-size:.6em; opacity:.72;
+  direction:ltr; unicode-bidi:isolate;
+  letter-spacing:.005em; margin-top:.12em;
+}
+
+/* מצבי שפה — נשלטים ממקש L */
+body.lang-he .lbl i{ display:none; }
+body.lang-en .lbl b{ display:none; }
+body.lang-en .lbl i{ font-size:1em; opacity:1; font-weight:700; margin-top:0; }
+body.lang-en .blk, body.lang-en .blk-c, body.lang-en .stack,
+body.lang-en .c-head{ direction:ltr; }
+
+/* ============================================================
+   בלוק בסיס
+   ============================================================ */
+.blk{
+  position:relative;
+  display:flex; align-items:center;
+  gap:.45em;
+  padding:.5em .85em;
+  min-height:2.6em;
+  background:var(--c);
+  color:#fff;
+  font-weight:700;
+  font-size:var(--blk-size, 1.05em);
+  border-radius:6px;
+  box-shadow:inset 0 -1px 0 rgba(0,0,0,.12);
+  width:max-content; max-width:100%;
+}
+
+/* חריץ עליון (נחתך מתוך הבלוק בצבע הרקע) */
+.blk-stack::before{
+  content:''; position:absolute; z-index:2;
+  top:0; inset-inline-start:var(--notch-x);
+  width:var(--notch-w); height:var(--notch-h);
+  background:var(--paper,#fff);
+  border-radius:0 0 6px 6px;
+}
+
+/* בליטה תחתונה */
+.blk-stack::after, .blk-hat::after, .blk-c::after{
+  content:''; position:absolute; z-index:1;
+  bottom:calc(var(--notch-h) * -1);
+  inset-inline-start:var(--notch-x);
+  width:var(--notch-w); height:var(--notch-h);
+  background:var(--c);
+  border-radius:0 0 6px 6px;
+}
+
+/* בלוק כובע — ראש מעוגל */
+.blk-hat{
+  border-radius:20px 20px 6px 6px;
+  padding-top:.85em;
+  min-height:3.1em;
+}
+
+/* בלוק סוגר — חריץ למעלה, בלי בליטה */
+.blk-cap::after{ display:none; }
+.blk-cap::before{
+  content:''; position:absolute; z-index:2;
+  top:0; inset-inline-start:var(--notch-x);
+  width:var(--notch-w); height:var(--notch-h);
+  background:var(--paper,#fff);
+  border-radius:0 0 6px 6px;
+}
+
+/* מדווח — גלולה */
+.blk-reporter{
+  display:inline-flex; border-radius:999px;
+  padding:.3em .8em; min-height:0;
+  font-size:var(--blk-size,1em);
+}
+.blk-reporter::before, .blk-reporter::after{ display:none; }
+
+/* בוליאני — משושה */
+.blk-bool{
+  display:inline-flex; min-height:0;
+  padding:.32em 1.05em;
+  border-radius:999px;
+  clip-path:polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%);
+  font-size:var(--blk-size,1em);
+}
+.blk-bool::before, .blk-bool::after{ display:none; }
+
+/* ============================================================
+   ערימת בלוקים
+   ============================================================ */
+.stack{
+  display:inline-flex; flex-direction:column;
+  align-items:flex-start;
+  width:max-content; max-width:100%;
+}
+/* רק הראשון מציג חריץ, רק האחרון מציג בליטה */
+.stack > .blk:not(:first-child)::before,
+.stack > .blk-c:not(:first-child) > .c-head::before{ display:none; }
+.stack > .blk:not(:last-child)::after,
+.stack > .blk-c:not(:last-child)::after{ display:none; }
+/* תפר עדין בין בלוקים סמוכים */
+.stack > .blk + .blk,
+.stack > .blk-c + .blk{ box-shadow:inset 0 1px 0 rgba(0,0,0,.13), inset 0 -1px 0 rgba(0,0,0,.12); }
+.stack > .blk + .blk-c > .c-head{ box-shadow:inset 0 1px 0 rgba(0,0,0,.13); }
+.stack > *{ align-self:stretch; }
+
+/* ============================================================
+   בלוק C — עוטף (אם / לעולם / חזור)
+   ============================================================ */
+.blk-c{ position:relative; display:flex; flex-direction:column; width:max-content; max-width:100%; }
+.blk-c > .c-head{
+  position:relative; display:flex; align-items:center; gap:.45em;
+  padding:.5em .85em; min-height:2.6em;
+  background:var(--c); color:#fff; font-weight:700;
+  font-size:var(--blk-size,1.05em);
+  border-radius:6px 6px 0 0;
+}
+.blk-c > .c-head::before{
+  content:''; position:absolute; z-index:2;
+  top:0; inset-inline-start:var(--notch-x);
+  width:var(--notch-w); height:var(--notch-h);
+  background:var(--paper,#fff); border-radius:0 0 6px 6px;
+}
+.blk-c > .c-body{
+  position:relative;
+  border-inline-start:16px solid var(--c);
+  padding:6px 0;
+  min-height:20px;
+  display:flex; flex-direction:column; align-items:flex-start;
+}
+.blk-c > .c-body:empty{ min-height:30px; }
+.blk-c > .c-foot{
+  position:relative;
+  height:18px; background:var(--c);
+  border-radius:0 0 6px 6px;
+}
+/* חריץ פנימי בראש החלל */
+.blk-c > .c-body::before{
+  content:''; position:absolute; z-index:2; top:0;
+  inset-inline-start:var(--notch-x);
+  width:var(--notch-w); height:var(--notch-h);
+  background:var(--paper,#fff); border-radius:0 0 6px 6px;
+}
+/* וריאנט "לעולם" — בלי בליטה תחתונה, עם חץ */
+.blk-c.loop-forever::after{ display:none; }
+.blk-c.loop-forever > .c-foot::after{
+  content:'↻'; position:absolute; inset-inline-end:.55em; top:-3px;
+  font-size:1.05em; color:#fff; opacity:.92; font-weight:700;
+}
+
+/* ============================================================
+   שדות בתוך בלוקים
+   ============================================================ */
+.fld-num, .fld-txt{
+  display:inline-flex; align-items:center; justify-content:center;
+  background:#fff; color:var(--field-txt);
+  font-weight:700; font-size:.86em;
+  padding:.16em .62em; min-width:1.9em;
+  text-align:center; direction:ltr;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);
+}
+.fld-num{ border-radius:999px; }
+.fld-txt{ border-radius:5px; direction:rtl; padding-inline:.7em; }
+
+.fld-drop{
+  display:inline-flex; align-items:center; gap:.35em;
+  background:var(--cd); color:#fff;
+  font-weight:700; font-size:.86em;
+  padding:.2em .55em;
+  border-radius:5px;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.15);
+}
+.fld-drop::after{ content:'▾'; font-size:.8em; opacity:.9; }
+
+/* שדה בוליאני ריק (חור משושה) */
+.fld-bool{
+  display:inline-block; width:3.2em; height:1.55em;
+  background:var(--cd);
+  clip-path:polygon(9px 0, calc(100% - 9px) 0, 100% 50%, calc(100% - 9px) 100%, 9px 100%, 0 50%);
+}
+/* חור עגול לשדה מדווח */
+.fld-slot{
+  display:inline-block; width:3em; height:1.5em;
+  background:var(--cd); border-radius:999px;
+}
+/* צבע */
+.fld-color{
+  display:inline-block; width:1.5em; height:1.5em;
+  border-radius:4px;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.85), 0 0 0 1px rgba(0,0,0,.2);
+  background:var(--swatch,#4CD1E0);
+}
+
+/* בלוק מקונן בתוך שדה */
+.blk .blk-reporter, .blk .blk-bool,
+.c-head .blk-reporter, .c-head .blk-bool{ font-size:.88em; }
+
+/* כשלשפה אחת אין מילה במקום הזה — שומרים על יישור השורות */
+.lbl b:empty::before, .lbl i:empty::before{ content:'\00a0'; }
+
+/* בלוק מקטגוריה שעוד לא נלמדה — עמום + תווית "מצגת N" */
+.blk.foreign, .blk-c.foreign{ opacity:.58; }
+.deck-ref{
+  font-size:.58em; font-weight:700; line-height:1;
+  background:rgba(0,0,0,.28); color:#fff;
+  padding:.28em .55em; border-radius:999px;
+  margin-inline-start:.25em; white-space:nowrap;
+  align-self:center;
+}
+
+/* סימנים שזהים בשתי השפות (x: y: > < +) */
+.sym{ font-weight:700; }
+
+/* אייקון הדגל הירוק */
+.icon-flag{ flex:none; width:1em; height:1em; display:inline-block; vertical-align:-.1em; }
+
+/* ============================================================
+   גדלים
+   ============================================================ */
+.blk-xl{ --blk-size:1.5em; }
+.blk-lg{ --blk-size:1.22em; }
+.blk-sm{ --blk-size:.92em; }
+.blk-xs{ --blk-size:.78em; }
+.blk-xxs{ --blk-size:.64em; }  /* לסקריפטים עם 3 רמות קינון */
